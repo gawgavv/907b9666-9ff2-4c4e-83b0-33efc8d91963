@@ -5,6 +5,8 @@ services:
   database:
     image: postgres:16.1
     environment:
+      - TZ=Asia/Jakarta
+      - PGTZ=Asia/Jakarta
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_DB=pendekindev
