@@ -1,7 +1,9 @@
+import { APP_GUARD } from '@nestjs/core';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CacheModule } from '@nestjs/cache-manager';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler'
 
 import { AppController } from './app.controller';
 
@@ -30,11 +32,23 @@ import { Click } from './clicks/entities/click.entity';
         port: +process.env.REDIS_PORT
       }
     }),
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 5
+      }
+    ]),
     UrlsModule,
     ClicksModule
   ],
   controllers: [
     AppController
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard
+    }
   ]
 })
 export class AppModule {}

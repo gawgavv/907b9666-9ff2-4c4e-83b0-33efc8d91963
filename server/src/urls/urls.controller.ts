@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { SkipThrottle } from '@nestjs/throttler';
 
 import { UrlsService } from './urls.service';
 
@@ -13,6 +14,7 @@ export class UrlsController {
     return await this.urlsService.create(createUrlDto);
   }
 
+  @SkipThrottle()
   @Get(':id')
   shortUrlTotalClicks(@Param('id') id: string) {
     return this.urlsService.findOne(+id);
