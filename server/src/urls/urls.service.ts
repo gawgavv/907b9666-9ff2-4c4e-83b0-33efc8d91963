@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
+import { instanceToPlain } from 'class-transformer'
 
 import { Url } from './entities/url.entity';
 import { CreateUrlDto } from './dto/create-url.dto';
@@ -18,7 +19,7 @@ export class UrlsService {
     private readonly clicksService: ClicksService
   ) {}
 
-  async create(createUrlDto: CreateUrlDto) {
+  async create(createUrlDto: CreateUrlDto): Promise<{ shortened: string }> {
 
     let checkId = true;
     let shortId = this.randomIdService.getRandomId(7);
@@ -37,16 +38,16 @@ export class UrlsService {
     return { shortened: process.env.HOST + `/` + id }
   }
 
-  findAll() {
-    return `This action returns all urls`;
-  }
-
-  async findOne(id: string) {
+  async findOne(id: string): Promise<{ origin: string }> {
     return await this.urlRepository.findOne({
       select: [`origin`],
       where: {
         id
       }
     });
+  }
+
+  async totalClicks(shortUrlId: string) {
+    return await this.clicksService.findAll(shortUrlId);
   }
 }

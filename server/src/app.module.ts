@@ -35,7 +35,7 @@ import { Click } from './clicks/entities/click.entity';
     ThrottlerModule.forRoot([
       {
         ttl: 60000,
-        limit: 5
+        limit: 10
       }
     ]),
     UrlsModule,
