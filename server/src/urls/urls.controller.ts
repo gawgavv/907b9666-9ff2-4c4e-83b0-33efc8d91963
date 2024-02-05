@@ -17,6 +17,6 @@ export class UrlsController {
   @SkipThrottle()
   @Get(':id')
   shortUrlTotalClicks(@Param('id') id: string) {
-    return this.urlsService.findOne(+id);
+    return this.urlsService.findOne(id);
   }
 }

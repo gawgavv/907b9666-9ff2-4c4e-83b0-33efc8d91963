@@ -13,8 +13,9 @@ export class ClicksService {
     @InjectRepository(Click) private readonly  clickRepository: Repository<Click>
   ) {}
 
-  create(createClickDto: CreateClickDto) {
-    return 'This action adds a new click';
+  async create(createClickDto: CreateClickDto) {
+    const newClick = this.clickRepository.create(createClickDto);
+    return await this.clickRepository.save(newClick);
   }
 
   findAll() {
