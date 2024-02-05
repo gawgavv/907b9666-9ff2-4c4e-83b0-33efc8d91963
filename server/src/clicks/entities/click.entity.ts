@@ -7,9 +7,7 @@ export class Click {
     @PrimaryGeneratedColumn(`increment`)
     id: number;
 
-    @Index({
-        unique: true
-    })
+    @Index()
     @Column({
         type: `varchar`,
         length: 7
