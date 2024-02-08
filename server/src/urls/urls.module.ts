@@ -7,6 +7,7 @@ import { Url } from './entities/url.entity';
 
 import { RandomIdService } from '../utils/randomid.service'
 import { ClicksModule } from 'src/clicks/clicks.module';
+import { CaptchaService } from 'src/utils/captcha.service';
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { ClicksModule } from 'src/clicks/clicks.module';
   ],
   providers: [
     UrlsService,
-    RandomIdService
+    RandomIdService,
+    CaptchaService
   ],
   exports: [
     UrlsService

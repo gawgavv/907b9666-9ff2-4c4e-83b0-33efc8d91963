@@ -1,8 +1,9 @@
 import { Controller, Get, HttpException, Param, Redirect, Res } from "@nestjs/common";
 
+import { Response } from "express";
+
 import { UrlsService } from "./urls/urls.service";
 import { ClicksService } from "./clicks/clicks.service";
-import { Response } from "express";
 
 
 @Controller()

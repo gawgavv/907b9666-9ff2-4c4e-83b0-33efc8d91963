@@ -19,7 +19,7 @@ export class ClicksService {
     return await this.clickRepository.save(newClick);
   }
 
-  async findAll(shortUrlId: string) {
+  async getClicksAndCounts(shortUrlId: string) {
     const [clicks, counts] = await this.clickRepository.findAndCount({ select: [`id`, `createdAt`], where: { urlId: shortUrlId } });
     return { clicks, counts };
   }
