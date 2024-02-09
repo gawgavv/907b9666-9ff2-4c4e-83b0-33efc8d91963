@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 
 import { CreateClickDto } from './dto/create-click.dto';
 import { Click } from './entities/click.entity';
+import { sourceMapsEnabled } from 'process';
 
 @Injectable()
 export class ClicksService {
@@ -13,15 +14,13 @@ export class ClicksService {
     @InjectRepository(Click) private readonly  clickRepository: Repository<Click>
   ) {}
 
-  create(createClickDto: CreateClickDto) {
-    return 'This action adds a new click';
+  async create(createClickDto: CreateClickDto) {
+    const newClick = this.clickRepository.create(createClickDto);
+    return await this.clickRepository.save(newClick);
   }
 
-  findAll() {
-    return `This action returns all clicks`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} click`;
+  async getClicksAndCounts(shortUrlId: string) {
+    const [clicks, counts] = await this.clickRepository.findAndCount({ select: [`id`, `createdAt`], where: { urlId: shortUrlId } });
+    return { clicks, counts };
   }
 }

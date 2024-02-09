@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CacheModule } from '@nestjs/cache-manager';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler'
+import { ScheduleModule } from '@nestjs/schedule';
 
 import { AppController } from './app.controller';
 
@@ -14,6 +15,8 @@ import { UrlsModule } from './urls/urls.module';
 import { ClicksModule } from './clicks/clicks.module';
 import { Url } from './urls/entities/url.entity';
 import { Click } from './clicks/entities/click.entity';
+
+import { BackgroundService } from './utils/background.service';
 
 @Module({
   imports: [
@@ -35,9 +38,10 @@ import { Click } from './clicks/entities/click.entity';
     ThrottlerModule.forRoot([
       {
         ttl: 60000,
-        limit: 5
+        limit: 10
       }
     ]),
+    ScheduleModule.forRoot(),
     UrlsModule,
     ClicksModule
   ],
@@ -48,7 +52,8 @@ import { Click } from './clicks/entities/click.entity';
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard
-    }
+    },
+    BackgroundService
   ]
 })
 export class AppModule {}

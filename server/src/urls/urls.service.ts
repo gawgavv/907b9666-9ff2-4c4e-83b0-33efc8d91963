@@ -2,12 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
+import { instanceToPlain } from 'class-transformer'
 
 import { Url } from './entities/url.entity';
 import { CreateUrlDto } from './dto/create-url.dto';
 
 import { RandomIdService } from 'src/utils/randomid.service';
 import { ClicksService } from 'src/clicks/clicks.service';
+import { Click } from 'src/clicks/entities/click.entity';
 
 @Injectable()
 export class UrlsService {
@@ -18,7 +20,7 @@ export class UrlsService {
     private readonly clicksService: ClicksService
   ) {}
 
-  async create(createUrlDto: CreateUrlDto) {
+  async create(createUrlDto: CreateUrlDto): Promise<{ shortened: string }> {
 
     let checkId = true;
     let shortId = this.randomIdService.getRandomId(7);
@@ -37,11 +39,16 @@ export class UrlsService {
     return { shortened: process.env.HOST + `/` + id }
   }
 
-  findAll() {
-    return `This action returns all urls`;
+  async findOne(id: string): Promise<{ origin: string }> {
+    return await this.urlRepository.findOne({
+      select: [`origin`],
+      where: {
+        id
+      }
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} url`;
+  async totalClicks(shortUrlId: string): Promise<{ clicks: Partial<Click>[], counts: number }> {
+    return await this.clicksService.getClicksAndCounts(shortUrlId);
   }
 }
