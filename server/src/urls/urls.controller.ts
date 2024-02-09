@@ -14,7 +14,8 @@ export class UrlsController {
     ) {}
 
   @Post()
-  async generateNewShortUrl(@Body() createUrlDto: CreateUrlDto & { captchaValue: string }) {
+  async generateNewShortUrl(@Body() createUrlDto: CreateUrlDto) {
+    console.log(createUrlDto)
     const isCaptchaValid = await this.captchaService.verifCaptcha(createUrlDto.captchaValue);
     if(!isCaptchaValid) throw new HttpException(`We suspect that you may be a bot`, 403);
     console.log(isCaptchaValid);
