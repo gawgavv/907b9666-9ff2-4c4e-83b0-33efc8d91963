@@ -23,7 +23,7 @@ export class AppController {
     ) {
         const url = await this.urlsService.findOne(shorturlId);
         if(!url) throw new HttpException(`Url not found`, 404);
-        await this.clicksService.create({ urlId: shorturlId }); // increase click by one
+        await this.clicksService.create({ shortened: shorturlId }); // increase click by one
         res.setHeader(`Cache-Control`, `no-store`);
         return { url: url.origin } // whatever returned from controller method with redirect decorator would be redirected to that returned value
     }

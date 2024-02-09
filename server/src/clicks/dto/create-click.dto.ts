@@ -1,4 +1,8 @@
+import { IsUrl, IsNotEmpty } from "class-validator"
+
 export class CreateClickDto {
 
-    urlId: string
+    @IsUrl()
+    @IsNotEmpty()
+    shortened: string;
 }
