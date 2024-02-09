@@ -9,6 +9,7 @@ import { CreateUrlDto } from './dto/create-url.dto';
 
 import { RandomIdService } from 'src/utils/randomid.service';
 import { ClicksService } from 'src/clicks/clicks.service';
+import { Click } from 'src/clicks/entities/click.entity';
 
 @Injectable()
 export class UrlsService {
@@ -47,7 +48,7 @@ export class UrlsService {
     });
   }
 
-  async totalClicks(shortUrlId: string) {
-    return await this.clicksService.findAll(shortUrlId);
+  async totalClicks(shortUrlId: string): Promise<{ clicks: Partial<Click>[], counts: number }> {
+    return await this.clicksService.getClicksAndCounts(shortUrlId);
   }
 }
