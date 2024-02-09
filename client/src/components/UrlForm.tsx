@@ -46,12 +46,14 @@ export default function UrlForm({ SITE_KEY, SERVER_HOST }: { SITE_KEY: string, S
             });
             if(!response.ok) throw await response.json();
 
-            const message = await response.json();
-            console.log(message);
-            router.push(`/shortened`);
-        } catch (error) {
+            const { shortened }: { shortened: string } = await response.json();
+            console.log(shortened);
+            toast.success(shortened, { position: `bottom-left` })
+        } catch (error: any) {
             console.error(error);
-            throw error;
+            setTimeout(() => toast.error(error.message[0], { position: `bottom-left` }), 1000); // just so the toast not too quickly disappear
+        } finally {
+            setTimeout(() => toast.dismiss(), 3000) // just so the toast not too quickly disappear
         }
     }
 

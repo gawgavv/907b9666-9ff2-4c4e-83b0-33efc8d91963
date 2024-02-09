@@ -15,7 +15,8 @@ export class ClicksService {
   ) {}
 
   async create(createClickDto: CreateClickDto) {
-    const newClick = this.clickRepository.create(createClickDto);
+    const urlId = createClickDto.shortened.replace(process.env.HOST, ``);
+    const newClick = this.clickRepository.create({ urlId });
     return await this.clickRepository.save(newClick);
   }
 
